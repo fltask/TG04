@@ -31,12 +31,30 @@ dynamic_keyboard = InlineKeyboardMarkup(
     ]
 )
 
-# Создание динамической клавиатуры с помощью билдера
-dynamic_inline_keyboard = InlineKeyboardBuilder()
-
-# Добавляем кнопки с callback_data для обработки нажатий
-dynamic_inline_keyboard.add(InlineKeyboardButton(text="Опция 1", callback_data="option1"))
-dynamic_inline_keyboard.add(InlineKeyboardButton(text="Опция 2", callback_data="option2"))
-
-# Настраиваем расположение кнопок (2 кнопки в ряд)
-dynamic_inline_keyboard.adjust(2)
+# Функция для создания динамической клавиатуры с опциями
+def dynamic_inline_keyboard():
+    """
+    Создает inline-клавиатуру с опциями.
+    Возвращает готовую клавиатуру для использования в боте.
+    """
+    # Создаем билдер для клавиатуры
+    keyboard_builder = InlineKeyboardBuilder()
+    
+    # Список опций для создания кнопок
+    options = [
+        {"text": "Опция 1", "callback_data": "option1"},
+        {"text": "Опция 2", "callback_data": "option2"}
+    ]
+    
+    # Добавляем кнопки с помощью цикла
+    for option in options:
+        keyboard_builder.add(InlineKeyboardButton(
+            text=option["text"], 
+            callback_data=option["callback_data"]
+        ))
+    
+    # Настраиваем расположение кнопок (2 кнопки в ряд)
+    keyboard_builder.adjust(2)
+    
+    # Возвращаем готовую клавиатуру
+    return keyboard_builder.as_markup()

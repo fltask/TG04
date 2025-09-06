@@ -102,7 +102,7 @@ async def show_more_callback(callback: CallbackQuery):
     Заменяет клавиатуру на клавиатуру с опциями 1 и 2.
     """
     # Заменяем клавиатуру на новую с опциями
-    await callback.message.edit_reply_markup(reply_markup=kb.dynamic_inline_keyboard.as_markup())
+    await callback.message.edit_reply_markup(reply_markup=kb.dynamic_inline_keyboard())
     # Подтверждаем получение callback query
     await callback.answer()
 
