@@ -11,7 +11,7 @@ logging.basicConfig(
 from aiogram import Bot, Dispatcher, F
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import CommandStart, Command
-from aiogram.types import Message, BotCommand
+from aiogram.types import Message, BotCommand, CallbackQuery
 import keyboards as kb
 import asyncio
 import sys
@@ -52,6 +52,23 @@ async def goodbye_command(message: Message):
 async def links_command(message: Message):
     await message.answer(f"URL-ссылки:", reply_markup=kb.links_keyboard)
 
+@dp.message(Command("dynamic"))
+async def dynamic_command(message: Message):
+    await message.answer(f"Динамическая клавиатура:", reply_markup=kb.dynamic_keyboard)
+@dp.callback_query(F.data == "show_more")
+async def show_more_callback(callback: CallbackQuery):
+    await callback.message.edit_reply_markup(reply_markup=kb.dynamic_inline_keyboard.as_markup())
+    await callback.answer()
+
+@dp.callback_query(F.data == "option1")
+async def option1_callback(callback: CallbackQuery):
+    await callback.answer("Опция 1", show_alert=True)
+    await callback.message.answer(f"Опция 1")
+
+@dp.callback_query(F.data == "option2")
+async def option2_callback(callback: CallbackQuery):
+    await callback.answer("Опция 2", show_alert=True)
+    await callback.message.answer(f"Опция 2")
 
 @dp.startup()
 async def on_startup(bot: Bot):
@@ -59,6 +76,7 @@ async def on_startup(bot: Bot):
         BotCommand(command="start", description="Начать работу с ботом"),
         BotCommand(command="help", description="Справка"),
         BotCommand(command="links", description="URL-ссылки"),
+        BotCommand(command="dynamic", description="Динамическая клавиатура"),
     ])
 
 async def main():
