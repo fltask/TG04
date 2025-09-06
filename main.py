@@ -48,7 +48,9 @@ async def hello_command(message: Message):
 async def goodbye_command(message: Message):
     await message.answer(f"До свидания, {message.from_user.first_name}!")
 
-
+@dp.message(Command("links"))
+async def links_command(message: Message):
+    await message.answer(f"URL-ссылки:", reply_markup=kb.links_keyboard)
 
 
 @dp.startup()
@@ -56,6 +58,7 @@ async def on_startup(bot: Bot):
     await bot.set_my_commands([
         BotCommand(command="start", description="Начать работу с ботом"),
         BotCommand(command="help", description="Справка"),
+        BotCommand(command="links", description="URL-ссылки"),
     ])
 
 async def main():
